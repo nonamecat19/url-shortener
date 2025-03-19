@@ -1,4 +1,7 @@
 const express = require('express');
+const {init} = require('./db');
+
+void init()
 
 const app = express();
 
