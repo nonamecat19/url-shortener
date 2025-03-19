@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: url-shortener-api
+  name: api
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: url-shortener-api
+      app: api
   template:
     metadata:
       labels:
-        app: url-shortener-api
+        app: api
     spec:
       containers:
         - name: api
-          image: myrepo/url-shortener-api:latest
+          image: nnc19/url-shortener-api:latest
           ports:
             - containerPort: 3000
           envFrom:
             - configMapRef:
-                name: url-shortener-config
+                name: api-config
             - secretRef:
-                name: url-shortener-secret
+                name: api-secret
