@@ -2,6 +2,7 @@ const express = require('express');
 const {init} = require('./db');
 const {getPlans, seed, createLink, getLinkInfo} = require('./services');
 require('dotenv/config')
+const {getCache, setCache, cacheFunction} = require("./cache");
 
 void init()
 
@@ -23,12 +24,14 @@ app.post('/url', async (req, res) => {
 })
 
 app.get('/:id', async (req, res) => {
-    const {url, timeout, planName} = await getLinkInfo(req.params.id);
-    const validDomain = url.replace(/[^a-zA-Z0-9.-]/g, '');
+    const cachedGetLinkInfo = cacheFunction(getLinkInfo, 10)
+    let info = await cachedGetLinkInfo(req.params.id)
+
+    const validDomain = info.url.replace(/[^a-zA-Z0-9.-]/g, '');
 
     setTimeout(() => {
         res.redirect(`https://${validDomain}`);
-    }, timeout);
+    }, info.timeout);
 })
 
 app.listen(process.env.PORT, () => {
