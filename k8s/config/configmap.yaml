@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: url-shortener-config
+data:
+  MONGO_URI: "mongodb://mongo:27017/urlshortener"
+  REDIS_HOST: "redis"
+  ELASTICSEARCH_HOST: "http://elasticsearch:9200"
